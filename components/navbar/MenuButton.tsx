@@ -9,11 +9,11 @@ const MenuButton = () => {
   return (
     <div className="px-2 text-gray-700">
       {openMenu ? (
-        <button className="rounded-md border p-1" onClick={setOpenMenu}>
+        <button className="p-1" onClick={() => setOpenMenu()}>
           <IoMdClose size={25} />
         </button>
       ) : (
-        <button onClick={setOpenMenu} className="rounded-md border p-1">
+        <button onClick={() => setOpenMenu()} className="p-1">
           <FiMenu size={25} />
         </button>
       )}
