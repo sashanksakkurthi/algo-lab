@@ -1,12 +1,12 @@
 import React from "react";
-import { NavBar } from "../common/NavBar";
-import { NormalIde } from "../common/NormalIde";
+import { NavBar } from "../components/NavBar";
+import { CodeIde } from "../components/CodeEditor";
 
 const OnlineIde = () => {
   return (
     <div className="w-full">
       <NavBar />
-      <NormalIde />
+      <CodeIde />
     </div>
   );
 };

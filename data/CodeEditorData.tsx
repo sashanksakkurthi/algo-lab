@@ -7,7 +7,7 @@ export const Language = [
   {
     id: 54,
     name: "C++ (GCC 9.2.0)",
-    language: "c++",
+    language: "cpp",
   },
   {
     id: 62,

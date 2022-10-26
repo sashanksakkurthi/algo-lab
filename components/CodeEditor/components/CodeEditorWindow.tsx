@@ -1,14 +1,12 @@
 import Editor from "@monaco-editor/react";
-import { useCodeEditorStore } from "../../store/CodeEditorStore";
+import { useContext } from "react";
+import { CodeEditorContext } from "../../../context/CodeEditorContext";
 
 export const CodeEditorWindow = () => {
-  const { sourceCode, setSourceCode, language } = useCodeEditorStore(
-    (state) => ({
-      sourceCode: state.sourceCode,
-      setSourceCode: state.setSourceCode,
-      language: state.language,
-    })
-  );
+  const context = useContext(CodeEditorContext);
+
+  if (!context) return null;
+  const { sourceCode, setSourceCode, compilerLanguage } = context;
 
   const handleEditorChange = (sourceCode: string | undefined) => {
     setSourceCode(sourceCode!);
@@ -17,7 +15,7 @@ export const CodeEditorWindow = () => {
   return (
     <div className="z-0 h-full w-full overflow-hidden rounded-md">
       <Editor
-        language={language.language}
+        language={compilerLanguage.language}
         height={"88vh"}
         width={`100%`}
         value={sourceCode}
