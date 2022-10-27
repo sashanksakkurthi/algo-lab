@@ -1,12 +1,11 @@
-import axios from "axios";
-import React, { useContext } from "react";
-import { CodeEditorContext } from "../../../context/CodeEditorContext";
+import React from "react";
+import { CodeEditorContext } from "../../context/CodeEditorContext";
 import { CgSpinner } from "react-icons/cg";
+import axios from "axios";
 
 export const CompilerButtons = () => {
-  const context = useContext(CodeEditorContext);
+  const context = React.useContext(CodeEditorContext);
 
-  if (!context) return null;
   const {
     sourceCode,
     customInput,
@@ -14,7 +13,7 @@ export const CompilerButtons = () => {
     setOutputDetails,
     setCompilerLoading,
     compilerLoading,
-  } = context;
+  } = context!;
 
   const Compile = async () => {
     await fetch(`${process.env.NEXT_PUBLIC_CODE_SUBMISSION_URL!}`, {
@@ -63,7 +62,7 @@ export const CompilerButtons = () => {
   return (
     <>
       {compilerLoading ? (
-        <div className="flex w-52 justify-center rounded-md border border-blue-600 py-2 font-inter font-medium text-blue-700 opacity-60">
+        <div className="flex w-40 justify-center rounded-md border border-blue-600 py-1 font-inter font-medium text-blue-600 opacity-90">
           <div role="status">
             <CgSpinner size={23} className="mr-2 animate-spin fill-blue-600" />
           </div>
@@ -71,7 +70,7 @@ export const CompilerButtons = () => {
         </div>
       ) : (
         <button
-          className="w-52 rounded-md bg-blue-600 py-2 font-inter font-medium text-white hover:bg-blue-700"
+          className="w-40 rounded-md bg-blue-600 py-1 font-inter font-medium text-white hover:bg-blue-700"
           onClick={() => {
             setCompilerLoading(true);
             Compile();

@@ -16,7 +16,7 @@ export const SideBarItems: {
   {
     name: "Your Labs",
     icon: <BsCodeSlash size={25} />,
-    path: "/your-labs",
+    path: "/yourLabs",
   },
   {
     name: "Contests",

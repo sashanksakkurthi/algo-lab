@@ -5,7 +5,6 @@ import { CodeIde } from "../components/CodeEditor";
 const OnlineIde = () => {
   return (
     <div className="w-full">
-      <NavBar />
       <CodeIde />
     </div>
   );
