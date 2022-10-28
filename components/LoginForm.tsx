@@ -5,15 +5,15 @@ import React from "react";
 const LoginForm = () => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [error, setError] = React.useState(false);
+  const [InvalidError, setInvalidError] = React.useState(false);
   const router = useRouter();
 
   const handleSubmit = () => {
-    setError(false);
+    setInvalidError(false);
     Login({ email, password })
       .then(() => router.push("/"))
       .catch(() => {
-        setError(true);
+        setInvalidError(true);
       });
   };
 
@@ -51,8 +51,8 @@ const LoginForm = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          {error ? (
-            <div className="text-center font-inter font-normal text-red-600">
+          {InvalidError ? (
+            <div className="text-center font-inter text-sm font-normal text-red-600">
               Incorrect Password or Email
             </div>
           ) : null}

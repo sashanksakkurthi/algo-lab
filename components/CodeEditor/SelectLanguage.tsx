@@ -1,11 +1,11 @@
+import React from "react";
 import { Listbox } from "@headlessui/react";
-import { useContext } from "react";
 import { FiChevronDown } from "react-icons/fi";
 import { Language } from "../../data/CodeEditorData";
 import { CodeEditorContext } from "../../context/CodeEditorContext";
 
 export const SelectLanguage = () => {
-  const context = useContext(CodeEditorContext);
+  const context = React.useContext(CodeEditorContext);
 
   const { compilerLanguage, setCompilerLanguage } = context!;
 
@@ -18,7 +18,7 @@ export const SelectLanguage = () => {
         }}
       >
         <div className="relative">
-          <Listbox.Button className="relative w-full cursor-pointer rounded-lg border border-gray-500 bg-neutral-800 py-2 pl-3 pr-10 text-left text-xs text-white">
+          <Listbox.Button className="relative w-full cursor-pointer rounded-lg border border-gray-300 bg-white py-2 pl-3 pr-10 text-left text-xs text-gray-800">
             <span className="block truncate font-roboto font-normal">
               {compilerLanguage.name}
             </span>
@@ -29,13 +29,13 @@ export const SelectLanguage = () => {
               />
             </span>
           </Listbox.Button>
-          <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md border bg-neutral-800 py-1 text-xs shadow-lg focus:outline-none">
+          <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md border bg-white py-1 text-xs shadow-lg focus:outline-none">
             {Language.map((compilerLanguage, index) => (
               <Listbox.Option
                 key={index}
                 className={({ active }) =>
                   `relative cursor-pointer select-none py-2 pl-4 pr-4 ${
-                    active ? "bg-blue-600 text-white" : "text-white"
+                    active ? "bg-blue-600 text-white" : "text-gray-800"
                   }`
                 }
                 value={compilerLanguage}

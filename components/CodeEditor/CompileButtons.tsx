@@ -3,66 +3,60 @@ import { CodeEditorContext } from "../../context/CodeEditorContext";
 import { CgSpinner } from "react-icons/cg";
 import axios from "axios";
 
-export const CompilerButtons = () => {
+export const CompileButtons = () => {
   const context = React.useContext(CodeEditorContext);
+  const [compilerLoading, setCompilerLoading] = React.useState(false);
 
-  const {
-    sourceCode,
-    customInput,
-    compilerLanguage,
-    setOutputDetails,
-    setCompilerLoading,
-    compilerLoading,
-  } = context!;
+  const { sourceCode, compilerLanguage, customInput, setOutputDetails } =
+    context!;
 
-  const Compile = async () => {
-    await fetch(`${process.env.NEXT_PUBLIC_CODE_SUBMISSION_URL!}`, {
-      method: "POST",
-      body: JSON.stringify({
-        language_id: compilerLanguage.id,
-        source_code: sourceCode,
-        stdin: customInput,
-      }),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-        "content-type": "application/json",
-      },
-    })
-      .then((response) => response.json())
+  const CompileCode = async () => {
+    await axios
+      .post(
+        `${process.env
+          .NEXT_PUBLIC_CODE_SUBMISSION_URL!}?base64_encoded=true&wait=false`,
+        {
+          source_code: Buffer.from(sourceCode).toString("base64"),
+          language_id: compilerLanguage.id,
+          stdin: Buffer.from(customInput).toString("base64"),
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
       .then((response) => {
-        CheckStatus(response.token);
+        setTimeout(() => {
+          getOutput(response.data.token);
+        }, 2000);
+        setCompilerLoading(false);
       });
   };
 
-  const CheckStatus = async (token: string) => {
+  const getOutput = async (token: string) => {
     await axios
       .get(`${process.env.NEXT_PUBLIC_CODE_SUBMISSION_URL!}/${token}`, {
         headers: {
-          "Content-type": "application/json; charset=UTF-8",
-          "content-type": "application/json",
+          "Content-Type": "application/json",
         },
       })
       .then((response) => {
         setOutputDetails(response.data);
-        let statusId = response.data.status?.id;
+        const statusId = response.data.status.id;
         if (statusId === 1 || statusId === 2) {
           setTimeout(() => {
-            CheckStatus(token);
-            setCompilerLoading(false);
-            console.log();
+            getOutput(token);
           }, 2000);
-          return;
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => console.log(error));
   };
 
   return (
     <>
       {compilerLoading ? (
-        <div className="flex w-40 justify-center rounded-md border border-blue-600 py-1 font-inter font-medium text-blue-600 opacity-90">
+        <div className="flex w-40 justify-center rounded-md border border-blue-600 py-1 font-inter font-medium text-blue-600">
           <div role="status">
             <CgSpinner size={23} className="mr-2 animate-spin fill-blue-600" />
           </div>
@@ -73,7 +67,8 @@ export const CompilerButtons = () => {
           className="w-40 rounded-md bg-blue-600 py-1 font-inter font-medium text-white hover:bg-blue-700"
           onClick={() => {
             setCompilerLoading(true);
-            Compile();
+            setOutputDetails({ stdout: "" });
+            CompileCode();
           }}
         >
           Compile Run

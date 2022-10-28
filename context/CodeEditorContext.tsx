@@ -13,10 +13,6 @@ export type CodeEditorTypes = {
   setCustomInput: (customInput: string) => void;
   outputDetails: { stdout: string };
   setOutputDetails: ({ stdout }: { stdout: string }) => void;
-  compilerProcessing: boolean;
-  setCompilerProcessing: (compilerProcessing: boolean) => void;
-  compilerLoading: boolean;
-  setCompilerLoading: (compilerLoading: boolean) => void;
 };
 
 export const CodeEditorContext = createContext<CodeEditorTypes | null>(null);

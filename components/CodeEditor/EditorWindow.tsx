@@ -2,7 +2,7 @@ import Editor from "@monaco-editor/react";
 import React from "react";
 import { CodeEditorContext } from "../../context/CodeEditorContext";
 
-export const CodeEditorWindow: React.FC = () => {
+export const EditorWindow: React.FC = () => {
   const context = React.useContext(CodeEditorContext);
 
   const { sourceCode, setSourceCode, compilerLanguage } = context!;
