@@ -1,11 +1,15 @@
 import Editor from "@monaco-editor/react";
 import React from "react";
-import { CodeEditorContext } from "../../context/CodeEditorContext";
+import { useCodeEditorStore } from "../../store/CodeEditorStore";
 
 export const EditorWindow: React.FC = () => {
-  const context = React.useContext(CodeEditorContext);
-
-  const { sourceCode, setSourceCode, compilerLanguage } = context!;
+  const { setSourceCode, compilerLanguage, sourceCode } = useCodeEditorStore(
+    (state) => ({
+      setSourceCode: state.setSourceCode,
+      compilerLanguage: state.compilerLanguage,
+      sourceCode: state.sourceCode,
+    })
+  );
 
   const handleEditorChange = (sourceCode: string | undefined) => {
     setSourceCode(sourceCode!);

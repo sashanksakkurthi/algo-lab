@@ -1,26 +1,32 @@
 import React from "react";
-import { CodeEditorContext } from "../../context/CodeEditorContext";
 import { CgSpinner } from "react-icons/cg";
 import axios from "axios";
+import { useCodeEditorStore } from "../../store/CodeEditorStore";
 
 export const CompileButtons = () => {
-  const context = React.useContext(CodeEditorContext);
   const [compilerLoading, setCompilerLoading] = React.useState(false);
+  const { compilerLanguage, sourceCode, customInput, setOutputDetails } =
+    useCodeEditorStore((state) => ({
+      compilerLanguage: state.compilerLanguage,
+      sourceCode: state.sourceCode,
+      customInput: state.customInput,
+      setOutputDetails: state.setOutputDetails,
+    }));
 
-  const { sourceCode, compilerLanguage, customInput, setOutputDetails } =
-    context!;
-
-  const CompileCode = async () => {
+  const handleCompile = async () => {
+    setCompilerLoading(true);
     await axios
       .post(
-        `${process.env
-          .NEXT_PUBLIC_CODE_SUBMISSION_URL!}?base64_encoded=true&wait=false`,
+        process.env.NEXT_PUBLIC_CODE_SUBMISSION_URL!,
         {
-          source_code: Buffer.from(sourceCode).toString("base64"),
+          source_code: btoa(sourceCode),
           language_id: compilerLanguage.id,
-          stdin: Buffer.from(customInput).toString("base64"),
+          stdin: btoa(customInput),
         },
         {
+          params: {
+            base64_encoded: true,
+          },
           headers: {
             "Content-Type": "application/json",
           },
@@ -30,27 +36,61 @@ export const CompileButtons = () => {
         setTimeout(() => {
           getOutput(response.data.token);
         }, 2000);
-        setCompilerLoading(false);
+      })
+      .catch((error) => {
+        setOutputDetails({
+          stdout: "",
+          time: 0,
+          memory: 0,
+          stderr: "",
+          token: "",
+          compile_output: "Compilation Error",
+          message: "",
+          status: {
+            description: "Compilation Error",
+            id: 6,
+          },
+        });
       });
   };
 
   const getOutput = async (token: string) => {
-    await axios
-      .get(`${process.env.NEXT_PUBLIC_CODE_SUBMISSION_URL!}/${token}`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => {
-        setOutputDetails(response.data);
-        const statusId = response.data.status.id;
-        if (statusId === 1 || statusId === 2) {
-          setTimeout(() => {
-            getOutput(token);
-          }, 2000);
+    try {
+      const response = await axios.get(
+        process.env.NEXT_PUBLIC_CODE_SUBMISSION_URL! + "/" + token,
+        {
+          params: {
+            base64_encoded: true,
+          },
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
-      })
-      .catch((error) => console.log(error));
+      );
+      const statusId = response.data.status.id;
+      if (statusId === 1 || statusId === 2) {
+        setTimeout(() => {
+          getOutput(token);
+        }, 2000);
+      }
+      setOutputDetails(response.data);
+      setCompilerLoading(false);
+    } catch (error) {
+      setOutputDetails({
+        stdout: "",
+        time: 0,
+        memory: 0,
+        stderr: "",
+        token: "",
+        compile_output: "Compilation Error",
+        message: "",
+        status: {
+          description: "Compilation Error",
+          id: 6,
+        },
+      });
+      setCompilerLoading(false);
+    }
   };
 
   return (
@@ -65,10 +105,9 @@ export const CompileButtons = () => {
       ) : (
         <button
           className="w-40 rounded-md bg-blue-600 py-1 font-inter font-medium text-white hover:bg-blue-700"
+          disabled={!sourceCode}
           onClick={() => {
-            setCompilerLoading(true);
-            setOutputDetails({ stdout: "" });
-            CompileCode();
+            handleCompile();
           }}
         >
           Compile Run

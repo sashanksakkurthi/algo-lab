@@ -2,12 +2,15 @@ import React from "react";
 import { Listbox } from "@headlessui/react";
 import { FiChevronDown } from "react-icons/fi";
 import { Language } from "../../data/CodeEditorData";
-import { CodeEditorContext } from "../../context/CodeEditorContext";
+import { useCodeEditorStore } from "../../store/CodeEditorStore";
 
 export const SelectLanguage = () => {
-  const context = React.useContext(CodeEditorContext);
-
-  const { compilerLanguage, setCompilerLanguage } = context!;
+  const { compilerLanguage, setCompilerLanguage } = useCodeEditorStore(
+    (state) => ({
+      compilerLanguage: state.compilerLanguage,
+      setCompilerLanguage: state.setCompilerLanguage,
+    })
+  );
 
   return (
     <div className="w-32 md:w-44">
