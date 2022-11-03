@@ -1,6 +1,6 @@
 import Editor from "@monaco-editor/react";
 import React from "react";
-import { useCodeEditorStore } from "../../store/CodeEditorStore";
+import { useCodeEditorStore } from "../store/CodeEditorStore";
 
 export const EditorWindow: React.FC = () => {
   const { setSourceCode, compilerLanguage, sourceCode } = useCodeEditorStore(

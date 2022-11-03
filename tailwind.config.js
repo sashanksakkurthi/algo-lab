@@ -9,7 +9,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        inter: ["Inter"], // 400,500
+        inter: ["Inter"], // 400,500,600
         roboto: ["Roboto"], // 400,500
         signika: ["Signika"], // 700
       },

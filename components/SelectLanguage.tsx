@@ -1,8 +1,8 @@
 import React from "react";
 import { Listbox } from "@headlessui/react";
 import { FiChevronDown } from "react-icons/fi";
-import { Language } from "../../data/CodeEditorData";
-import { useCodeEditorStore } from "../../store/CodeEditorStore";
+import { Language } from "../data/CodeEditorData";
+import { useCodeEditorStore } from "../store/CodeEditorStore";
 
 export const SelectLanguage = () => {
   const { compilerLanguage, setCompilerLanguage } = useCodeEditorStore(

@@ -1,7 +1,7 @@
 import React from "react";
 import { CgSpinner } from "react-icons/cg";
 import axios from "axios";
-import { useCodeEditorStore } from "../../store/CodeEditorStore";
+import { useCodeEditorStore } from "../store/CodeEditorStore";
 
 export const CompileButtons = () => {
   const [compilerLoading, setCompilerLoading] = React.useState(false);
@@ -29,13 +29,13 @@ export const CompileButtons = () => {
           },
           headers: {
             "Content-Type": "application/json",
+            "X-RapidAPI-Key": process.env.NEXT_PUBLIC_RAPID_API_KEY,
+            "X-RapidAPI-Host": process.env.NEXT_PUBLIC_RAPID_API_HOST,
           },
         }
       )
       .then((response) => {
-        setTimeout(() => {
-          getOutput(response.data.token);
-        }, 2000);
+        getOutput(response.data.token);
       })
       .catch((error) => {
         setOutputDetails({
@@ -64,6 +64,8 @@ export const CompileButtons = () => {
           },
           headers: {
             "Content-Type": "application/json",
+            "X-RapidAPI-Key": process.env.NEXT_PUBLIC_RAPID_API_KEY,
+            "X-RapidAPI-Host": process.env.NEXT_PUBLIC_RAPID_API_HOST,
           },
         }
       );

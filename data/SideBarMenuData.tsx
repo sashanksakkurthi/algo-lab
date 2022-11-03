@@ -1,7 +1,10 @@
 import { ReactElement } from "react";
-import { BsCodeSlash, BsReverseLayoutTextSidebarReverse } from "react-icons/bs";
-import { AiOutlineTrophy, AiOutlineDashboard } from "react-icons/ai";
-import { IoSettingsOutline } from "react-icons/io5";
+import { BsCodeSlash, BsWindowSidebar } from "react-icons/bs";
+import {
+  AiOutlineTrophy,
+  AiOutlineDashboard,
+  AiOutlineBook,
+} from "react-icons/ai";
 
 export const SideBarItems: {
   name: string;
@@ -10,27 +13,27 @@ export const SideBarItems: {
 }[] = [
   {
     name: "Dashboard",
-    icon: <AiOutlineDashboard size={25} />,
+    icon: <AiOutlineDashboard size={20} />,
     path: "/",
   },
   {
     name: "Your Labs",
-    icon: <BsCodeSlash size={25} />,
-    path: "/yourLabs",
+    icon: <BsCodeSlash size={20} />,
+    path: "/yourlabs",
+  },
+  {
+    name: "Your Courses",
+    icon: <AiOutlineBook size={20} />,
+    path: "/yourcourses",
   },
   {
     name: "Contests",
-    icon: <AiOutlineTrophy size={25} />,
+    icon: <AiOutlineTrophy size={20} />,
     path: "/contents",
   },
   {
     name: "Online IDE",
-    icon: <BsReverseLayoutTextSidebarReverse size={20} />,
+    icon: <BsWindowSidebar size={20} />,
     path: "/onlineIde",
-  },
-  {
-    name: "Settings",
-    icon: <IoSettingsOutline size={23} />,
-    path: "/settings",
   },
 ];

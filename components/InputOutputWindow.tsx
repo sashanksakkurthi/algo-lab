@@ -1,5 +1,5 @@
 import React from "react";
-import { useCodeEditorStore } from "../../store/CodeEditorStore";
+import { useCodeEditorStore } from "../store/CodeEditorStore";
 
 export const InputOutputWindow = () => {
   const { outputDetails, setCustomInput } = useCodeEditorStore((state) => ({
